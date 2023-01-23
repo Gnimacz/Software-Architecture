@@ -25,7 +25,6 @@ public class EnemySpawner : MonoBehaviour
             BaseEnemy enemy = Instantiate(enemyToSpawn, transform).gameObject.GetComponent<BaseEnemy>();
             enemy.goal = goal.transform;
             yield return new WaitForSeconds(SpawnTime);
-            Debug.Log("Timer up");
         }
     }
 }

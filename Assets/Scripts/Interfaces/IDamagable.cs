@@ -8,4 +8,5 @@ public interface IDamagable
 
     public void OnDeath();
     public void OnHurt();
+    public void TakeDamage(float damage);
 }

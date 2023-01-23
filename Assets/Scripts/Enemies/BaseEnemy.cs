@@ -6,7 +6,7 @@ using PathCreation;
 
 public class BaseEnemy : MonoBehaviour, IDamagable
 {
-    float hp = 2f;
+    [SerializeField] float hp = 6f;
     public float speed = 10f;
     public float damage = 2f;
 
@@ -31,10 +31,22 @@ public class BaseEnemy : MonoBehaviour, IDamagable
 
     public void OnDeath()
     {
+        Destroy(this.gameObject);
     }
 
     public void OnHurt()
     {
+    }
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+        if(health <= 0f)
+        {
+            OnDeath();
+            return;
+        }
+        OnHurt();
     }
     #endregion
 

@@ -12445,10 +12445,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8532e43bdfefdbc489308fb449ffb0a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyToSpawn: {fileID: 1837020044936422944, guid: 3ef4bc10e158d934490355a197f0f807,
-    type: 3}
+  levels:
+  - {fileID: 11400000, guid: e8536635243c0bb4eb3c648c5735c3ec, type: 2}
+  currentWave: 0
+  timeBetweenWaves: 5
   goal: {fileID: 180899563}
-  SpawnTime: 1.2
 --- !u!65 &2050505597
 BoxCollider:
   m_ObjectHideFlags: 0

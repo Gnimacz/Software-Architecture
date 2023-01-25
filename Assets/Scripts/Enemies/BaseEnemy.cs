@@ -7,8 +7,8 @@ using PathCreation;
 public class BaseEnemy : MonoBehaviour, IDamagable
 {
     [SerializeField] float hp = 6f;
-    public float speed = 10f;
-    public float damage = 2f;
+    [SerializeField] float speed = 10f;
+    [SerializeField] float damage = 2f;
 
     #region Path Following Variables
     public bool doesPathExist = false;

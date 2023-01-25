@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySpawner : MonoBehaviour
+public class LevelManager : MonoBehaviour
 {
     List<WaveScriptableObject> waves = new List<WaveScriptableObject>();
     [SerializeField][Header("Levels"), Tooltip("A list containing Level ScriptableObjects")] List<LevelScriptableObject> levels = new List<LevelScriptableObject>();

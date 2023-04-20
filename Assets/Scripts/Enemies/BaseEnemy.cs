@@ -10,12 +10,6 @@ public class BaseEnemy : MonoBehaviour, IDamagable
     [SerializeField] float speed = 10f;
     [SerializeField] float damage = 2f;
 
-    #region Path Following Variables
-    public bool doesPathExist = false;
-    public PathCreator pathCreator;
-    public EndOfPathInstruction end;
-    private float distanceTravelled = 0f;
-    #endregion
 
     #region Nav Mesh
     private NavMeshAgent meshAgent;
@@ -52,22 +46,11 @@ public class BaseEnemy : MonoBehaviour, IDamagable
 
     void Start()
     {
-        if (pathCreator != null) doesPathExist = true;
-
         meshAgent = GetComponent<NavMeshAgent>();
     }
 
     void Update()
     {
-        if (doesPathExist)
-        {
-            distanceTravelled += speed * Time.deltaTime;
-            transform.position = pathCreator.path.GetPointAtDistance(distanceTravelled, end);
-            //transform.rotation = pathCreator.path.GetRotationAtDistance(distanceTravelled, end);
-        }
-        else
-        {
             meshAgent.SetDestination(goal.position);
-        }
     }
 }

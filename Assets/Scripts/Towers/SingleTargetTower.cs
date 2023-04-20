@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
-public class AOITower : Tower
+public class SingleTargetTower : Tower
 {
     [Header("Draw Circle Settings")]
     [SerializeField] private int steps = 20;
@@ -13,7 +14,7 @@ public class AOITower : Tower
 
     [Header("Attack Settings")]
     [SerializeField] private float damage = 1f;
-    [SerializeField] private float attackSpeed = 1f;
+    [SerializeField] private float attackSpeed = 0.2f;
     [SerializeField] private bool canAttack = true;
 
     [Header("Upgrade Settings")]
@@ -38,7 +39,7 @@ public class AOITower : Tower
     protected override int SellValue { get => sellValue; set => sellValue = value; }
     #endregion
 
-    //variables for the AOI tower
+    //variables for the Single Target tower
     private List<IDamagable> m_List = new List<IDamagable>();
     public static event System.Action<IDamagable> hurtEnemy;
 
@@ -61,6 +62,7 @@ public class AOITower : Tower
 
         StartCoroutine(Attack());
         OnTowerPlaced();
+        EventBus<EnemyKilledEvent>.Subscribe(onEnemyKilled);
     }
 
     private void Update()
@@ -72,17 +74,16 @@ public class AOITower : Tower
     {
         while (canAttack)
         {
+            
             if (m_List.Count > 0)
             {
-                for (int i = 0; i < m_List.Count; i++)
+                IDamagable enemy = m_List[0];
+                enemy.TakeDamage(damage, IDamagable.DamageType.Debuff_Slow);
+                if (!enemy.IsAlive)
                 {
-                    IDamagable enemy = m_List[i];
-                    enemy.TakeDamage(damage, IDamagable.DamageType.Physical);
-                    if (enemy.health <= 0)
-                    {
-                        m_List.Remove(enemy);
-                    }
+                    m_List.Remove(enemy);
                 }
+
             }
             yield return new WaitForSeconds(attackSpeed);
         }
@@ -110,6 +111,15 @@ public class AOITower : Tower
             {
                 m_List.Remove(enemy);
             }
+        }
+    }
+
+    void onEnemyKilled(Event e)
+    {
+        EnemyKilledEvent enemyKilledEvent = (EnemyKilledEvent)e;
+        if (m_List.Contains(enemyKilledEvent.enemy))
+        {
+            m_List.Remove(enemyKilledEvent.enemy);
         }
     }
 }

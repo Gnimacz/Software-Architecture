@@ -98,12 +98,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b50b0670dc7838445bdf96ae52afd102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 6
-  speed: 10
-  damage: 2
-  doesPathExist: 0
-  pathCreator: {fileID: 0}
-  end: 0
+  hp: 10
+  speed: 5
+  damage: 1
+  isAlive: 1
+  hasDebuff: 0
   goal: {fileID: 0}
 --- !u!195 &-5779936422468583408
 NavMeshAgent:

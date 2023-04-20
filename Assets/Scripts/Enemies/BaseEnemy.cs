@@ -9,6 +9,8 @@ public class BaseEnemy : MonoBehaviour, IDamagable
     [SerializeField] float hp = 6f;
     [SerializeField] float speed = 10f;
     [SerializeField] float damage = 2f;
+    [SerializeField] bool isAlive = true;
+    [SerializeField] bool hasDebuff = false;
 
 
     #region Nav Mesh
@@ -23,24 +25,52 @@ public class BaseEnemy : MonoBehaviour, IDamagable
         set { hp = value; }
     }
 
+    public bool IsAlive
+    {
+        get { return isAlive; }
+        set { isAlive = value; }
+    }
+
+    public bool HasDebuff
+    {
+        get { return hasDebuff; }
+        set { hasDebuff = value; }
+    }
+
     public void OnDeath()
     {
-        Destroy(this.gameObject);
+        isAlive = false;
+        EventBus<EnemyKilledEvent>.Raise(new EnemyKilledEvent(this));
+        Destroy(gameObject);
     }
 
     public void OnHurt()
     {
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, IDamagable.DamageType damageType)
     {
-        health -= damage;
-        if(health <= 0f)
+        switch (damageType)
         {
-            OnDeath();
-            return;
+            case IDamagable.DamageType.Physical:
+                health -= damage;
+                if (health <= 0f)
+                {
+                    OnDeath();
+                    return;
+                }
+                break;
+            case IDamagable.DamageType.Debuff_Slow:
+                if (!hasDebuff)
+                {
+                    hasDebuff = true;
+                    speed *= 0.5f;
+                }
+                break;
+            default:
+                break;
         }
-        OnHurt();
+        
     }
     #endregion
 
@@ -51,6 +81,12 @@ public class BaseEnemy : MonoBehaviour, IDamagable
 
     void Update()
     {
-            meshAgent.SetDestination(goal.position);
+        MoveEnemy();
+    }
+
+    void MoveEnemy()
+    {
+        meshAgent.SetDestination(goal.position);
+        meshAgent.speed = speed;
     }
 }

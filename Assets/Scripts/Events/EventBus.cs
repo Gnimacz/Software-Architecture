@@ -19,6 +19,16 @@ public class EventBus<Event>
     }
 }
 
+public class TowerPlacedEvent : Event
+{
+    public Tower tower;
+
+    public TowerPlacedEvent(Tower tower)
+    {
+        this.tower = tower;
+    }
+}
+
 public class EnemyKilledEvent : Event
 {
     public BaseEnemy enemy;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AOITower : Tower
+public class DebuffTower : Tower
 {
     [Header("Draw Circle Settings")]
     [SerializeField] private int steps = 20;
@@ -12,7 +12,7 @@ public class AOITower : Tower
     [SerializeField] private float drawHeight = 0.1f;
 
     [Header("Attack Settings")]
-    [SerializeField] private float damage = 1f;
+    [SerializeField] private float damage = 0f;
     [SerializeField] private float attackSpeed = 1f;
     [SerializeField] private bool canAttack = true;
 
@@ -77,7 +77,7 @@ public class AOITower : Tower
                 for (int i = 0; i < m_List.Count; i++)
                 {
                     IDamagable enemy = m_List[i];
-                    enemy.TakeDamage(damage, IDamagable.DamageType.Physical);
+                    enemy.TakeDamage(damage, IDamagable.DamageType.Debuff_Slow);
                     if (enemy.health <= 0)
                     {
                         m_List.Remove(enemy);

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] public int money { get; private set; } = 10;
+    [SerializeField] private int startMoney = 10;
+    [SerializeField] public int money { get; private set; }
     [SerializeField] private int lives = 3;
     [SerializeField] private int currentWave = 0;
     [SerializeField] private int currentLevel = 0;
@@ -29,6 +30,7 @@ public class GameManager : MonoBehaviour
 
     public int Health { get => lives; set => lives = value; }
 
+
     private void OnEnable()
     {
         //subscribe to events here
@@ -36,22 +38,36 @@ public class GameManager : MonoBehaviour
         EventBus<EnemyKilledEvent>.Subscribe(OnEnemyDeath);
         EventBus<EnemyReachedGoalEvent>.Subscribe(OnEnemyReachedGoal);
         EventBus<PurchaseEvent>.Subscribe(OnPurchase);
+
+        AddMoney(startMoney);
+    }
+
+    private void Update()
+    {
+        Debug.LogError(money);
     }
 
     void OnEnemyDeath(Event e)
     {
         AddMoney((e as EnemyKilledEvent).enemy.Money);
+        
+    }
+
+    public void AddMoney(int amount)
+    {
+        money += amount;
         EventBus<MoneyChangeEvent>.Raise(new MoneyChangeEvent(money));
     }
 
-    void AddMoney(int amount)
-    {
-        money += amount;
-    }
-
-    void RemoveMoney(int amount)
+    public void RemoveMoney(int amount)
     {
         money -= amount;
+    }
+
+    public void SetMoney(int amount)
+    {
+        money = amount;
+        EventBus<MoneyChangeEvent>.Raise(new MoneyChangeEvent(money));
     }
 
     void OnEnemyReachedGoal(Event e)

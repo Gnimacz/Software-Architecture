@@ -45,7 +45,8 @@ public class EnemyManager : MonoBehaviour
 
         currentLevel = 0;
         LoadWaves();
-        WaveStart();
+        //WaveStart();
+        WavesWithDelay();
 
         EventBus<EnemyKilledEvent>.Subscribe(OnEnemyDeath);
         EventBus<EnemyReachedGoalEvent>.Subscribe(OnEnemyReachedGoal);
@@ -107,9 +108,8 @@ public class EnemyManager : MonoBehaviour
 
     }
 
-    void PostWave()
+    void WavesWithDelay()
     {
-        currentWave++;
         if (currentWave >= waves.Count)
         {
             LoadNextLevel();
@@ -130,7 +130,8 @@ public class EnemyManager : MonoBehaviour
         Debug.Log(enemies.Count);
         if (enemies.Count <= 0)
         {
-            PostWave();
+            currentWave++;
+            WavesWithDelay();
         }
     }
 

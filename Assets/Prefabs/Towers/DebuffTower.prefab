@@ -236,7 +236,8 @@ MonoBehaviour:
   damage: 0
   attackSpeed: 1
   canAttack: 1
-  nextUpgrade: {fileID: 0}
+  nextUpgrade: {fileID: 1965582315476962020, guid: eef32c56d1271c84f99a03252442f393,
+    type: 3}
   cost: 10
   sellValue: 5
 --- !u!1001 &1692231136655872355
@@ -314,17 +315,17 @@ PrefabInstance:
     - target: {fileID: 6836740120897204037, guid: 7e02c8fd154f6d64399ac8643e3787e5,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6836740120897204037, guid: 7e02c8fd154f6d64399ac8643e3787e5,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.965926
+      value: 0.8660259
       objectReference: {fileID: 0}
     - target: {fileID: 6836740120897204037, guid: 7e02c8fd154f6d64399ac8643e3787e5,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.2588186
+      value: 0.49999917
       objectReference: {fileID: 0}
     - target: {fileID: 6836740120897204037, guid: 7e02c8fd154f6d64399ac8643e3787e5,
         type: 3}
@@ -344,12 +345,12 @@ PrefabInstance:
     - target: {fileID: 6836740120897204037, guid: 7e02c8fd154f6d64399ac8643e3787e5,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 6836740120897204037, guid: 7e02c8fd154f6d64399ac8643e3787e5,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 30
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 6836740120897204037, guid: 7e02c8fd154f6d64399ac8643e3787e5,
         type: 3}

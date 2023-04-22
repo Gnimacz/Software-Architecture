@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using UnityEngine.Rendering;
 
 public abstract class Event { }
@@ -20,20 +21,27 @@ public class EventBus<Event>
     }
 }
 
-public class TowerPlacedEvent : Event
+public class TileHoverEvent : Event
 {
-    public Tower tower;
+    public Tile tile;
 
-    /// <summary>
-    /// Called when a tower is placed down.
-    /// </summary>
-    /// <param name="tower">The tower that was placed down</param>
-    public TowerPlacedEvent(Tower tower)
+    public TileHoverEvent(Tile tile)
     {
-        this.tower = tower;
+        this.tile = tile;
     }
 }
 
+public class TileUpdateEvent : Event
+{
+    public GameObject tower;
+    public Tile tile;
+
+    public TileUpdateEvent(Tile tile, GameObject tower)
+    {
+        this.tile = tile;
+        this.tower = tower;
+    }
+}
 
 public class EnemyKilledEvent : Event
 {

@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
         EventBus<EnemyKilledEvent>.Subscribe(OnEnemyDeath);
         EventBus<EnemyReachedGoalEvent>.Subscribe(OnEnemyReachedGoal);
         EventBus<PurchaseEvent>.Subscribe(OnPurchase);
+        EventBus<GameOverEvent>.Subscribe(OnGameOverEvent);
 
         AddMoney(startMoney);
     }
@@ -78,5 +79,11 @@ public class GameManager : MonoBehaviour
             playerWonGame = false;
             EventBus<GameOverEvent>.Raise(new GameOverEvent(playerWonGame));
         }
+    }
+
+    private void OnGameOverEvent(Event e)
+    {
+        isGameOver = true;
+        playerWonGame = (e as GameOverEvent).playerWon;
     }
 }

@@ -27,14 +27,14 @@ public class TowerUpgradeButton : MonoBehaviour
     private void OnEnable()
     {
         EventBus<MoneyChangeEvent>.Subscribe(OnMoneyChangeEvent);
-        EventBus<WaveStatusUpdate>.Subscribe(OnWaveStatusChanged);
+        EventBus<WavePauseUpdate>.Subscribe(OnWaveStatusChanged);
         UpdateUI();
     }
 
     private void OnDisable()
     {
         EventBus<MoneyChangeEvent>.Unsubscribe(OnMoneyChangeEvent);
-        EventBus<WaveStatusUpdate>.Unsubscribe(OnWaveStatusChanged);
+        EventBus<WavePauseUpdate>.Unsubscribe(OnWaveStatusChanged);
     }
 
     public void SetAttachedTower(Tower tower)
@@ -82,7 +82,7 @@ public class TowerUpgradeButton : MonoBehaviour
 
     void OnWaveStatusChanged(Event e)
     {
-        SetActive((e as WaveStatusUpdate).isPaused);
+        SetActive((e as WavePauseUpdate).isPaused);
     }
 
     public void SetActive(bool active)

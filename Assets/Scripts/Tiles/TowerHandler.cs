@@ -17,7 +17,7 @@ public class TowerHandler : MonoBehaviour
     private void Awake()
     {
         mainCamera = Camera.main;
-        EventBus<WaveStatusUpdate>.Subscribe(OnWaveUpdate);
+        EventBus<WavePauseUpdate>.Subscribe(OnWaveUpdate);
     }
 
 
@@ -49,7 +49,7 @@ public class TowerHandler : MonoBehaviour
 
     private void OnWaveUpdate(Event e)
     {
-        canPlace = (e as WaveStatusUpdate).isPaused;
+        canPlace = (e as WavePauseUpdate).isPaused;
     }
 
     private Tile GetTileAtMousePosition()

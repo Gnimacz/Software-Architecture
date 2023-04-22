@@ -15,7 +15,7 @@ public class TowerBuyButtonController : MonoBehaviour
         costText.text = tower.Cost.ToString();
 
         EventBus<MoneyChangeEvent>.Subscribe(OnMoneyChange);
-        EventBus<WaveStatusUpdate>.Subscribe(OnWaveStateUpdate);
+        EventBus<WavePauseUpdate>.Subscribe(OnWaveStateUpdate);
         CheckPrice();
     }
 
@@ -33,7 +33,7 @@ public class TowerBuyButtonController : MonoBehaviour
 
     void OnWaveStateUpdate(Event e)
     {
-        SetActive((e as WaveStatusUpdate).isPaused);
+        SetActive((e as WavePauseUpdate).isPaused);
     }
 
     void CheckPrice()

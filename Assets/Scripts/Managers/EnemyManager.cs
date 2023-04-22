@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -7,13 +8,12 @@ public class EnemyManager : MonoBehaviour
 {
     List<WaveScriptableObject> waves = new List<WaveScriptableObject>();
     [SerializeField][Header("Levels"), Tooltip("A list containing Level ScriptableObjects")] List<LevelScriptableObject> levels = new List<LevelScriptableObject>();
-    [SerializeField] int currentWave = 0;
-    int currentLevel = 0;
+    public int currentWave = 0;
+    public int currentLevel = 0;
     [SerializeField] int timeBetweenWaves = 5;
     [SerializeField] GameObject start;
     [SerializeField] GameObject goal;
 
-    bool isWaveGoingOn = false;
 
     private List<BaseEnemy> enemies = new List<BaseEnemy>();
 
@@ -50,11 +50,12 @@ public class EnemyManager : MonoBehaviour
 
         EventBus<EnemyKilledEvent>.Subscribe(OnEnemyDeath);
         EventBus<EnemyReachedGoalEvent>.Subscribe(OnEnemyReachedGoal);
+        EventBus<GameOverEvent>.Subscribe(OnGameOver);
     }
 
     private void WaveStart()
     {
-        StartCoroutine(spawnEnemies());
+        StartCoroutine(SpawnEnemies());
     }
 
     void LoadWaves()
@@ -72,14 +73,19 @@ public class EnemyManager : MonoBehaviour
 
     void LoadNextLevel()
     {
+        if(GameManager.Instance.isGameOver) return;
         currentLevel++;
-        if (currentLevel >= levels.Count) currentLevel = 0;
+        if (currentLevel >= levels.Count)
+        {
+            EventBus<GameOverEvent>.Raise(new GameOverEvent(true));
+            return;
+        }
         LoadWaves();
     }
 
-    IEnumerator spawnEnemies()
+    IEnumerator SpawnEnemies()
     {
-        isWaveGoingOn = true;
+        if(GameManager.Instance.isGameOver) yield break;
         for (int i = 0; i < waves[currentWave].EnemiesToSpawn.Count; i++)
         {
             GameObject enemy = Instantiate(waves[currentWave].EnemiesToSpawn[i], start.transform.position, Quaternion.identity);
@@ -91,13 +97,14 @@ public class EnemyManager : MonoBehaviour
 
     IEnumerator WaitForWave()
     {
+        if(GameManager.Instance.isGameOver) yield break;
         for (int i = 0; i < timeBetweenWaves; i++)
         {
-            EventBus<WaveStatusUpdate>.Raise(new WaveStatusUpdate(true, timeBetweenWaves - i));
+            EventBus<WavePauseUpdate>.Raise(new WavePauseUpdate(true, timeBetweenWaves - i));
             Debug.LogWarning("Wave in cooldown!\n" + (timeBetweenWaves - i) + " remaining.");
             yield return new WaitForSeconds(1);
         }
-        EventBus<WaveStatusUpdate>.Raise(new WaveStatusUpdate(false, 0));
+        EventBus<WavePauseUpdate>.Raise(new WavePauseUpdate(false, 0));
         WaveStart();
     }
 
@@ -127,11 +134,18 @@ public class EnemyManager : MonoBehaviour
     {
         enemies.Remove(enemy);
         Destroy(enemy.gameObject);
-        Debug.Log(enemies.Count);
-        if (enemies.Count <= 0)
+        if (enemies.Count <= 0 && !GameManager.Instance.isGameOver)
         {
             currentWave++;
             WavesWithDelay();
+        }
+    }
+
+    void OnGameOver(Event e)
+    {
+        foreach (BaseEnemy residue in enemies.ToList())
+        {
+            RemoveEnemy(residue);
         }
     }
 

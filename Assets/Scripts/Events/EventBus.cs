@@ -99,6 +99,23 @@ public class EnemyReachedGoalEvent : Event
     }
 }
 
+public class EnemyHurtEvent : Event
+{
+    public BaseEnemy enemy;
+    public float damage;
+
+    /// <summary>
+    /// Called when an enemy is hurt. Could be used to play certain effects or sounds for example
+    /// </summary>
+    /// <param name="enemy">The enemy that was hurt</param>
+    /// <param name="damage">The amount of damage the enemy took</param>
+    public EnemyHurtEvent(BaseEnemy enemy, float damage)
+    {
+        this.enemy = enemy;
+        this.damage = damage;
+    }
+}
+
 public class HealthUpdateEvent : Event
 {
     public int health;
@@ -112,22 +129,23 @@ public class HealthUpdateEvent : Event
     }
 }
 
-public class WaveStatusUpdate : Event
+public class WavePauseUpdate : Event
 {
     public bool isPaused;
     public int pauseTime = 0;
 
     /// <summary>
-    /// Called when a wave needs to be paused or unpaused for a certain amount of time
+    /// Called when a wave is paused or unpaused. Gives the time until the next wave
     /// </summary>
     /// <param name="isPaused">Whether a wave is paused or not</param>
     /// <param name="pauseTime">How long until the next wave</param>
-    public WaveStatusUpdate(bool isPaused, int pauseTime)
+    public WavePauseUpdate(bool isPaused, int pauseTime)
     {
         this.isPaused = isPaused;
         this.pauseTime = pauseTime;
     }
 }
+
 public class GameOverEvent : Event
 {
     public bool playerWon;

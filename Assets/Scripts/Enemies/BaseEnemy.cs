@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class BaseEnemy : MonoBehaviour, IDamagable
 {
     [SerializeField] float hp = 6f;
+    float maxHp = 6f;
     [SerializeField] float speed = 10f;
     [SerializeField] int damage = 1;
     [SerializeField] bool isAlive = true;
@@ -23,6 +24,12 @@ public class BaseEnemy : MonoBehaviour, IDamagable
     {
         get { return hp; }
         set { hp = value; }
+    }
+
+    public float MaxHealth
+    {
+        get { return maxHp; }
+        set { maxHp = value; }
     }
 
     public int Damage
@@ -57,8 +64,9 @@ public class BaseEnemy : MonoBehaviour, IDamagable
         //Destroy(gameObject);
     }
 
-    public void OnHurt()
+    public void OnHurt(float damageTaken)
     {
+        EventBus<EnemyHurtEvent>.Raise(new EnemyHurtEvent(this, damageTaken));
     }
 
     public void TakeDamage(float damage, IDamagable.DamageType damageType)
@@ -72,6 +80,7 @@ public class BaseEnemy : MonoBehaviour, IDamagable
                     OnDeath();
                     return;
                 }
+                OnHurt(damage);
                 break;
             case IDamagable.DamageType.Debuff_Slow:
                 if (!hasDebuff)
@@ -92,6 +101,7 @@ public class BaseEnemy : MonoBehaviour, IDamagable
     void Start()
     {
         meshAgent = GetComponent<NavMeshAgent>();
+        maxHp = hp;
     }
 
     void Update()

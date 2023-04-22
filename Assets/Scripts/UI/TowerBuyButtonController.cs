@@ -38,7 +38,7 @@ public class TowerBuyButtonController : MonoBehaviour
 
     void CheckPrice()
     {
-        if (tower.Cost > GameManager.Instance.money)
+        if (tower.Cost > GameManager.Instance.Money)
         {
             SetActive(false);
             buyButton.image.color = Color.red;

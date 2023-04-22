@@ -51,7 +51,7 @@ public class TowerUpgradeButton : MonoBehaviour
     public void UpdateUI()
     {
         upgradeCostText.text = attachedTower.NextUpgrade.Cost.ToString();
-        if (attachedTower.NextUpgrade.Cost > GameManager.Instance.money)
+        if (attachedTower.NextUpgrade.Cost > GameManager.Instance.Money)
         {
             upgradeButton.interactable = false;
             upgradeButton.image.color = Color.red;

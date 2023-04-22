@@ -1,18 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private int startMoney = 10;
-    [SerializeField] public int money { get; private set; }
+    public int Money { get; private set; }
     [SerializeField] private int lives = 3;
-    [SerializeField] private int currentWave = 0;
-    [SerializeField] private int currentLevel = 0;
 
-    [SerializeField] public bool isGameOver = false;
+    public bool isGameOver = false;
     [SerializeField] private bool playerWonGame = false;
-    [SerializeField] private bool buildingPhase = true;
 
     private static GameManager instance;
 
@@ -30,7 +25,6 @@ public class GameManager : MonoBehaviour
 
     public int Health { get => lives; set => lives = value; }
 
-
     private void OnEnable()
     {
         //subscribe to events here
@@ -42,46 +36,40 @@ public class GameManager : MonoBehaviour
         AddMoney(startMoney);
     }
 
-    private void Update()
-    {
-        Debug.LogError(money);
-    }
-
-    void OnEnemyDeath(Event e)
+    private void OnEnemyDeath(Event e)
     {
         AddMoney((e as EnemyKilledEvent).enemy.Money);
-        
     }
 
     public void AddMoney(int amount)
     {
-        money += amount;
-        EventBus<MoneyChangeEvent>.Raise(new MoneyChangeEvent(money));
+        Money += amount;
+        EventBus<MoneyChangeEvent>.Raise(new MoneyChangeEvent(Money));
     }
 
     public void RemoveMoney(int amount)
     {
-        money -= amount;
+        Money -= amount;
     }
 
     public void SetMoney(int amount)
     {
-        money = amount;
-        EventBus<MoneyChangeEvent>.Raise(new MoneyChangeEvent(money));
+        Money = amount;
+        EventBus<MoneyChangeEvent>.Raise(new MoneyChangeEvent(Money));
     }
 
-    void OnEnemyReachedGoal(Event e)
+    private void OnEnemyReachedGoal(Event e)
     {
-        EventBus<HealthUpdateEvent>.Raise(new HealthUpdateEvent(lives - 1));
+        EventBus<HealthUpdateEvent>.Raise(new HealthUpdateEvent(lives - (e as EnemyReachedGoalEvent).enemy.Damage));
     }
 
-    void OnPurchase(Event e)
+    private void OnPurchase(Event e)
     {
         RemoveMoney((e as PurchaseEvent).money);
-        EventBus<MoneyChangeEvent>.Raise(new MoneyChangeEvent(money));
+        EventBus<MoneyChangeEvent>.Raise(new MoneyChangeEvent(Money));
     }
 
-    void OnHealthUpdate(Event e)
+    private void OnHealthUpdate(Event e)
     {
         lives = (e as HealthUpdateEvent).health;
         if (lives <= 0)

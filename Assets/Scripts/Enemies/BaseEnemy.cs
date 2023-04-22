@@ -7,7 +7,7 @@ public class BaseEnemy : MonoBehaviour, IDamagable
 {
     [SerializeField] float hp = 6f;
     [SerializeField] float speed = 10f;
-    [SerializeField] float damage = 2f;
+    [SerializeField] int damage = 1;
     [SerializeField] bool isAlive = true;
     [SerializeField] bool hasDebuff = false;
     [SerializeField] int money = 5;
@@ -19,10 +19,16 @@ public class BaseEnemy : MonoBehaviour, IDamagable
     #endregion
 
     #region Interface Implementations
-    public float health
+    public float Health
     {
         get { return hp; }
         set { hp = value; }
+    }
+
+    public int Damage
+    {
+        get { return damage; }
+        set { damage = value; }
     }
 
     public bool IsAlive
@@ -60,8 +66,8 @@ public class BaseEnemy : MonoBehaviour, IDamagable
         switch (damageType)
         {
             case IDamagable.DamageType.Physical:
-                health -= damage;
-                if (health <= 0f)
+                Health -= damage;
+                if (Health <= 0f)
                 {
                     OnDeath();
                     return;

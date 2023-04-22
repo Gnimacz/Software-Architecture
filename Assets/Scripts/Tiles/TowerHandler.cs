@@ -83,7 +83,7 @@ public class TowerHandler : MonoBehaviour
     {
         if (tile.hasTower) return;
         if (selectedTower == null) return;
-        if (selectedTowerScript.Cost > GameManager.Instance.money) return;
+        if (selectedTowerScript.Cost > GameManager.Instance.Money) return;
 
         EventBus<TileUpdateEvent>.Raise(new TileUpdateEvent(tile, selectedTower));
         selectedTower = null;

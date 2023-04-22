@@ -16,6 +16,7 @@ public class EnemyManager : MonoBehaviour
 
 
     private List<BaseEnemy> enemies = new List<BaseEnemy>();
+    public List<BaseEnemy> Enemies { get { return enemies; } }
 
     private static EnemyManager instance;
 

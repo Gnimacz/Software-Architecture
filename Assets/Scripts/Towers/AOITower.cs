@@ -101,7 +101,7 @@ public class AOITower : Tower
 
     protected override IEnumerator Attack()
     {
-        while (canAttack)
+        while (canAttack && !GameManager.Instance.isGameOver)
         {
             foreach (IDamagable enemy in targetEnemies.ToList())
             {

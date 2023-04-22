@@ -25,6 +25,8 @@ public class GameManager : MonoBehaviour
 
     public int Health { get => lives; set => lives = value; }
 
+    public bool PlayerWonGame { get => playerWonGame; set => playerWonGame = value; }
+
     private void OnEnable()
     {
         //subscribe to events here

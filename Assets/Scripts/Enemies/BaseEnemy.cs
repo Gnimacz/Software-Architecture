@@ -77,6 +77,7 @@ public class BaseEnemy : MonoBehaviour, IDamagable
                 Health -= damage;
                 if (Health <= 0f)
                 {
+                    Health = 0f;
                     OnDeath();
                     return;
                 }

@@ -98,7 +98,7 @@ public class SingleTargetTower : Tower
 
     protected override IEnumerator Attack()
     {
-        while (canAttack)
+        while (canAttack && !GameManager.Instance.isGameOver)
         {
 
             if (targetEnemies.Count > 0)

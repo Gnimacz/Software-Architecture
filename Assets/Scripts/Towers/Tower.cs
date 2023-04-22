@@ -13,13 +13,15 @@ public abstract class Tower : MonoBehaviour
     protected abstract float Damage { get; set; }
     protected abstract float AttackSpeed { get; set; }
     protected abstract bool CanAttack { get; set; }
+    protected abstract List<IDamagable> TargetEnemies { get; set; }
 
-    protected abstract GameObject NextUpgrade { get; set; }
-    protected abstract int Cost { get; set; }
-    protected abstract int SellValue { get; set; }
+    public abstract Tower NextUpgrade { get; set; }
+    public abstract int Cost { get; set; }
+    public abstract int SellValue { get; set; }
 
     protected abstract IEnumerator Attack();
     protected abstract void OnTowerPlaced();
+    protected abstract void OnTowerUpgrade(Event e);
 
     protected void drawCircle(int steps, float radius, LineRenderer lineRenderer, float drawHeight)
     {

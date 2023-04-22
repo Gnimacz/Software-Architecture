@@ -6,6 +6,8 @@ public class Goal : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        Destroy(other.gameObject);
+        if (!other.CompareTag("Enemy")) return;
+        BaseEnemy enemyThatEntered = other.GetComponent<BaseEnemy>();
+        EventBus<EnemyReachedGoalEvent>.Raise(new EnemyReachedGoalEvent(enemyThatEntered));
     }
 }

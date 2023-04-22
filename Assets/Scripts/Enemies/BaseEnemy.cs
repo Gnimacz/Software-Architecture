@@ -10,6 +10,7 @@ public class BaseEnemy : MonoBehaviour, IDamagable
     [SerializeField] float damage = 2f;
     [SerializeField] bool isAlive = true;
     [SerializeField] bool hasDebuff = false;
+    [SerializeField] int money = 5;
 
 
     #region Nav Mesh
@@ -36,11 +37,18 @@ public class BaseEnemy : MonoBehaviour, IDamagable
         set { hasDebuff = value; }
     }
 
+    public int Money
+    {
+        get { return money; }
+        set { money = value; }
+    }
+
+
     public void OnDeath()
     {
         isAlive = false;
         EventBus<EnemyKilledEvent>.Raise(new EnemyKilledEvent(this));
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 
     public void OnHurt()
@@ -69,7 +77,9 @@ public class BaseEnemy : MonoBehaviour, IDamagable
             default:
                 break;
         }
+
         
+
     }
     #endregion
 

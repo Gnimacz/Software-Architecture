@@ -7,6 +7,7 @@ public interface IDamagable
     float health { get; set; }
     bool IsAlive { get; set; }
     bool HasDebuff { get; set; }
+    int Money { get; set; }
 
     public void OnDeath();
     public void OnHurt();

@@ -9,7 +9,6 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] int currentWave = 0;
     int currentLevel = 0;
     [SerializeField] float timeBetweenWaves = 5f;
-    float timeBetweenSpawns;
     [SerializeField] GameObject goal;
 
     bool isWaveGoingOn = false;

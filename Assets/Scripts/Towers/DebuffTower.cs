@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class DebuffTower : Tower
@@ -17,10 +18,11 @@ public class DebuffTower : Tower
     [SerializeField] private bool canAttack = true;
 
     [Header("Upgrade Settings")]
-    [SerializeField] private GameObject nextUpgrade;
+    [SerializeField] private Tower nextUpgrade;
     [SerializeField] private int cost = 10;
     [SerializeField] private int sellValue = 5;
 
+    private List<IDamagable> targetEnemies = new List<IDamagable>();
     #region protected variables
     protected override int Steps { get => steps; set => steps = value; }
     protected override float Range { get => range; set => range = value; }
@@ -33,19 +35,43 @@ public class DebuffTower : Tower
     protected override float AttackSpeed { get => attackSpeed; set => attackSpeed = value; }
     protected override bool CanAttack { get => canAttack; set => canAttack = value; }
 
-    protected override GameObject NextUpgrade { get => nextUpgrade; set => nextUpgrade = value; }
-    protected override int Cost { get => cost; set => cost = value; }
-    protected override int SellValue { get => sellValue; set => sellValue = value; }
+    public override Tower NextUpgrade { get => nextUpgrade; set => nextUpgrade = value; }
+    public override int Cost { get => cost; set => cost = value; }
+    public override int SellValue { get => sellValue; set => sellValue = value; }
+    protected override List<IDamagable> TargetEnemies { get => targetEnemies; set => targetEnemies = value; }
     #endregion
 
-    //variables for the AOI tower
-    private List<IDamagable> m_List = new List<IDamagable>();
-    public static event System.Action<IDamagable> hurtEnemy;
+    #region public getter methods
+    public int GetCost()
+    {
+        return Cost;
+    }
+    public int GetSellValue()
+    {
+        return SellValue;
+    }
+    public Tower GetNextUpgrade()
+    {
+        return NextUpgrade;
+    }
+    #endregion
 
     protected override void OnTowerPlaced()
     {
         drawCircle(Steps, Range, LineRenderer, DrawHeight);
         TargetCollider.radius = Range;
+    }
+
+    protected override void OnTowerUpgrade(Event e)
+    {
+        if ((e as TowerUpGradeEvent).tower != this) return;
+        if (NextUpgrade != null)
+        {
+            GameObject newTower = Instantiate(NextUpgrade.gameObject, transform.position, transform.rotation);
+            newTower.transform.parent = transform.parent;
+            Destroy(gameObject);
+        }
+
     }
 
     private void Awake()
@@ -61,29 +87,39 @@ public class DebuffTower : Tower
 
         StartCoroutine(Attack());
         OnTowerPlaced();
+
+        EventBus<EnemyKilledEvent>.Subscribe(onEnemyKilled);
+        EventBus<EnemyReachedGoalEvent>.Subscribe(OnEnemyReachedGoal);
+        EventBus<TowerUpGradeEvent>.Subscribe(OnTowerUpgrade);
     }
 
-    private void Update()
-    {
-        //drawCircle(Steps, targetCollider.radius, LineRenderer, DrawHeight);
-    }
 
     protected override IEnumerator Attack()
     {
         while (canAttack)
         {
-            if (m_List.Count > 0)
+            //if (targetEnemies.Count > 0)
+            //{
+            //for (int i = 0; i < targetEnemies.Count; i++)
+            //{
+            //    IDamagable enemy = targetEnemies[i];
+            //    if (enemy.health <= 0)
+            //    {
+            //        targetEnemies.Remove(enemy);
+            //        i--;
+            //    }
+            //    enemy.TakeDamage(damage, IDamagable.DamageType.Debuff_Slow);
+            //}
+            foreach (IDamagable enemy in targetEnemies.ToList())
             {
-                for (int i = 0; i < m_List.Count; i++)
+                if (!enemy.IsAlive || enemy == null)
                 {
-                    IDamagable enemy = m_List[i];
-                    enemy.TakeDamage(damage, IDamagable.DamageType.Debuff_Slow);
-                    if (enemy.health <= 0)
-                    {
-                        m_List.Remove(enemy);
-                    }
+                    targetEnemies.Remove(enemy);
+                    continue;
                 }
+                enemy.TakeDamage(Damage, IDamagable.DamageType.Debuff_Slow);
             }
+            //}
             yield return new WaitForSeconds(attackSpeed);
         }
     }
@@ -96,7 +132,7 @@ public class DebuffTower : Tower
             IDamagable enemy = other.GetComponent<IDamagable>();
             if (enemy != null)
             {
-                m_List.Add(enemy);
+                targetEnemies.Add(enemy);
             }
         }
     }
@@ -108,8 +144,23 @@ public class DebuffTower : Tower
             IDamagable enemy = other.GetComponent<IDamagable>();
             if (enemy != null)
             {
-                m_List.Remove(enemy);
+                targetEnemies.Remove(enemy);
             }
         }
     }
+
+    void onEnemyKilled(Event e)
+    {
+        EnemyKilledEvent enemyKilledEvent = (e as EnemyKilledEvent);
+        if (!TargetEnemies.Contains(enemyKilledEvent.enemy)) return;
+        targetEnemies.Remove(enemyKilledEvent.enemy);
+
+    }
+    void OnEnemyReachedGoal(Event e)
+    {
+        EnemyReachedGoalEvent enemyReachedGoalEvent = (e as EnemyReachedGoalEvent);
+        if (!TargetEnemies.Contains(enemyReachedGoalEvent.enemy)) return;
+        targetEnemies.Remove(enemyReachedGoalEvent.enemy);
+    }
+
 }

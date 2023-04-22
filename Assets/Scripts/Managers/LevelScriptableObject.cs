@@ -6,5 +6,6 @@ using UnityEngine;
 public class LevelScriptableObject : ScriptableObject
 {
     [SerializeField] public List<WaveScriptableObject> waves = new List<WaveScriptableObject>();
-    [SerializeField][Header("Time in between waves")] protected int timeBetweenWaves = 5;
+    [SerializeField][Header("Time in between waves")] public int timeBetweenWaves = 5;
+    [SerializeField][Header("How many times can you be hit before the level ends?")] public int health = 3;
 }

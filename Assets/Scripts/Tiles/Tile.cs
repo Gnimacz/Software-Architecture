@@ -60,7 +60,7 @@ public class Tile : MonoBehaviour
         }
         else if(tileUpdateEvent.tile == this)
         {
-            tower = Instantiate(tileUpdateEvent.tower, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
+            tower = Instantiate(tileUpdateEvent.tower, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
             towerScript = tower.GetComponent<Tower>();
             hasTower = true;
             EventBus<PurchaseEvent>.Raise(new PurchaseEvent(towerScript.Cost));

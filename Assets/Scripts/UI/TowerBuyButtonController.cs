@@ -25,11 +25,6 @@ public class TowerBuyButtonController : MonoBehaviour
         EventBus<WavePauseUpdate>.Unsubscribe(OnWaveStateUpdate);
     }
 
-    private void OnDestroy()
-    {
-        EventBus<MoneyChangeEvent>.Unsubscribe(OnMoneyChange);
-    }
-
     void OnMoneyChange(Event e)
     {
         MoneyChangeEvent moneyChangeEvent = e as MoneyChangeEvent;

@@ -39,6 +39,16 @@ public class GameManager : MonoBehaviour
         AddMoney(startMoney);
     }
 
+    private void OnDisable()
+    {
+        //unsubscribe to events here
+        EventBus<HealthUpdateEvent>.Unsubscribe(OnHealthUpdate);
+        EventBus<EnemyKilledEvent>.Unsubscribe(OnEnemyDeath);
+        EventBus<EnemyReachedGoalEvent>.Unsubscribe(OnEnemyReachedGoal);
+        EventBus<PurchaseEvent>.Unsubscribe(OnPurchase);
+        EventBus<GameOverEvent>.Unsubscribe(OnGameOverEvent);
+    }
+
     private void OnEnemyDeath(Event e)
     {
         AddMoney((e as EnemyKilledEvent).enemy.Money);

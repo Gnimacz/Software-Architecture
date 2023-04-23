@@ -28,6 +28,14 @@ public class GameInfoUI : MonoBehaviour
         winOrLoseText.text = "";
     }
 
+    private void OnDestroy()
+    {
+        EventBus<HealthUpdateEvent>.Unsubscribe(OnHealthChange);
+        EventBus<MoneyChangeEvent>.Unsubscribe(OnMoneyChanged);
+        EventBus<WavePauseUpdate>.Unsubscribe(OnWaveStatusUpdate);
+        EventBus<GameOverEvent>.Unsubscribe(OnGameOver);
+    }
+
     void OnHealthChange(Event e)
     {
         livesText.text = "Health: " + (e as HealthUpdateEvent).health.ToString();

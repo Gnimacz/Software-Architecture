@@ -94,6 +94,13 @@ public class AOITower : Tower
         EventBus<TowerUpGradeEvent>.Subscribe(OnTowerUpgrade);
     }
 
+    private void OnDestroy()
+    {
+        EventBus<EnemyKilledEvent>.Unsubscribe(onEnemyKilled);
+        EventBus<EnemyReachedGoalEvent>.Unsubscribe(onEnemyReachedGoal);
+        EventBus<TowerUpGradeEvent>.Unsubscribe(OnTowerUpgrade);
+    }
+
     private void Update()
     {
         //drawCircle(Steps, targetCollider.radius, LineRenderer, DrawHeight);

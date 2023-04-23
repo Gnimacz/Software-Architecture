@@ -93,6 +93,13 @@ public class DebuffTower : Tower
         EventBus<TowerUpGradeEvent>.Subscribe(OnTowerUpgrade);
     }
 
+    private void OnDestroy()
+    {
+        EventBus<EnemyKilledEvent>.Unsubscribe(onEnemyKilled);
+        EventBus<EnemyReachedGoalEvent>.Unsubscribe(OnEnemyReachedGoal);
+        EventBus<TowerUpGradeEvent>.Unsubscribe(OnTowerUpgrade);
+    }
+
 
     protected override IEnumerator Attack()
     {

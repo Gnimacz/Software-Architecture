@@ -54,6 +54,13 @@ public class EnemyManager : MonoBehaviour
         EventBus<GameOverEvent>.Subscribe(OnGameOver);
     }
 
+    private void OnDisable()
+    {
+        EventBus<EnemyKilledEvent>.Unsubscribe(OnEnemyDeath);
+        EventBus<EnemyReachedGoalEvent>.Unsubscribe(OnEnemyReachedGoal);
+        EventBus<GameOverEvent>.Unsubscribe(OnGameOver);
+    }
+
     private void WaveStart()
     {
         StartCoroutine(SpawnEnemies());

@@ -95,6 +95,13 @@ public class SingleTargetTower : Tower
         EventBus<TowerUpGradeEvent>.Subscribe(OnTowerUpgrade);
     }
 
+    private void OnDestroy()
+    {
+        EventBus<EnemyKilledEvent>.Unsubscribe(onEnemyKilled);
+        EventBus<EnemyReachedGoalEvent>.Unsubscribe(onEnemyReachedGoal);
+        EventBus<TowerUpGradeEvent>.Unsubscribe(OnTowerUpgrade);
+    }
+
 
     protected override IEnumerator Attack()
     {

@@ -18,6 +18,7 @@ public class TowerHandler : MonoBehaviour
     {
         mainCamera = Camera.main;
         EventBus<WavePauseUpdate>.Subscribe(OnWaveUpdate);
+        EventBus<TowerSelectedEvent>.Subscribe(SelectTower);
     }
 
 
@@ -28,7 +29,11 @@ public class TowerHandler : MonoBehaviour
         TileHover();
         if (isHovering && selectedTower == null && Input.GetMouseButtonDown(0))
         {
-            RemoveTowerAtTile(GetTileAtMousePosition());
+            Tile tile = GetTileAtMousePosition();
+            if (tile == null || !tile.hasTower){
+                EventBus<OpenTowerUIEvent>.Raise(new OpenTowerUIEvent(null, false));
+            }
+            else EventBus<OpenTowerUIEvent>.Raise(new OpenTowerUIEvent(GetTileAtMousePosition(), true));
         }
         if (selectedTower != null)
         {
@@ -61,7 +66,7 @@ public class TowerHandler : MonoBehaviour
         foreach (RaycastHit hit in hits)
         {
             if (!hit.collider.CompareTag("Tile")) continue;
-            Tile tile = hit.collider.gameObject.GetComponent<Tile>();
+            Tile tile = hit.collider.gameObject.transform.parent.GetComponent<Tile>();
             Debug.Log("Tile found at mouse position");
             return tile;
         }
@@ -98,8 +103,9 @@ public class TowerHandler : MonoBehaviour
         }
     }
 
-    public void SelectTower(GameObject tower)
+    public void SelectTower(Event e)
     {
+        GameObject tower = (e as TowerSelectedEvent).tower;
         selectedTower = tower;
         selectedTowerScript = tower.GetComponent<Tower>();
     }

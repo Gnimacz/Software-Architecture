@@ -165,3 +165,23 @@ public class TowerUpGradeEvent : Event
 
     }
 }
+
+public class OpenTowerUIEvent : Event
+{
+    public Tile tile;
+    public bool shouldOpen;
+    public OpenTowerUIEvent(Tile tile, bool shouldOpen = true)
+    {
+        this.tile = tile;
+        this.shouldOpen = shouldOpen;
+    }
+}
+
+public class TowerSelectedEvent : Event
+{
+    public GameObject tower;
+    public TowerSelectedEvent(GameObject tower)
+    {
+        this.tower = tower;
+    }
+}

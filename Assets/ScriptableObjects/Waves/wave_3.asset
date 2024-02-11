@@ -25,3 +25,7 @@ MonoBehaviour:
   - {fileID: 1837020044936422944, guid: 3ef4bc10e158d934490355a197f0f807, type: 3}
   - {fileID: 1837020044936422944, guid: 3ef4bc10e158d934490355a197f0f807, type: 3}
   TimeBetweenSpawns: 0.7
+  availableTowers:
+  - {fileID: 1593822837731943788, guid: 18009310efb39074abd4ec64c75f3683, type: 3}
+  - {fileID: 1965582315476962023, guid: 8e6f7f386adb379468ed185f3cf8bcf8, type: 3}
+  - {fileID: 476332756127463102, guid: 26d2fea853262bf478f096d8925b7106, type: 3}

@@ -10,16 +10,17 @@ public class EnemyTestScript
     [OneTimeSetUp]
     public void LoadScene()
     {
-        SceneManager.LoadScene("Main");
+        SceneManager.LoadScene("UnitTestScene");
     }
 
     
     [UnityTest]
     public IEnumerator EnemyDamageEventTest()
     {
-        yield return new WaitForSeconds(4f);
+        WaveManager.Instance.timeBetweenWaves = 3;
+        yield return new WaitForSeconds(5);
 
-        var enemy = EnemyManager.Instance.Enemies[0];
+        var enemy = WaveManager.Instance.Enemies[0];
 
         float damage = 3;
         enemy.TakeDamage(damage, IDamagable.DamageType.Physical);
@@ -30,9 +31,9 @@ public class EnemyTestScript
     [UnityTest]
     public IEnumerator EnemyInstantDeathTest()
     {
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(2);
 
-        var enemy = EnemyManager.Instance.Enemies[0];
+        var enemy = WaveManager.Instance.Enemies[0];
 
         float damage = 200;
         enemy.TakeDamage(damage, IDamagable.DamageType.Physical);

@@ -7,4 +7,5 @@ public class WaveScriptableObject : ScriptableObject
 {
     public List<GameObject> EnemiesToSpawn = new List<GameObject>();
     public float TimeBetweenSpawns = 1f;
+    public List<GameObject> availableTowers = new List<GameObject>();
 }

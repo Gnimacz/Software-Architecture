@@ -1,23 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class Tower : MonoBehaviour
 {
     protected abstract int Steps { get; set; }
-    protected abstract float Range { get; set; }
+    public abstract float Range { get; set; }
     protected abstract LineRenderer LineRenderer { get; }
     protected abstract SphereCollider TargetCollider { get; }
     protected abstract float DrawHeight { get; set; }
 
-    protected abstract float Damage { get; set; }
-    protected abstract float AttackSpeed { get; set; }
+    public abstract float Damage { get; set; }
+    public abstract float AttackSpeed { get; set; }
     protected abstract bool CanAttack { get; set; }
     protected abstract List<IDamagable> TargetEnemies { get; set; }
 
     public abstract Tower NextUpgrade { get; set; }
     public abstract int Cost { get; set; }
     public abstract int SellValue { get; set; }
+    public abstract string TowerType { get; }
+
+    protected abstract GameObject AttackEffect { get; }
+    protected abstract Transform AttackEffectTransform { get; }
 
     protected abstract IEnumerator Attack();
     protected abstract void OnTowerPlaced();
@@ -40,7 +45,7 @@ public abstract class Tower : MonoBehaviour
 
             lineRenderer.SetPosition(i, new Vector3(x, y, z));
 
-            angle += (360f / steps);
+            angle += 360f / steps;
         }
     }
 }

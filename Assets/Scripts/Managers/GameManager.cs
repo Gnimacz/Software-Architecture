@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
     private void OnHealthUpdate(Event e)
     {
         lives = (e as HealthUpdateEvent).health;
-        if (lives <= 0)
+        if (lives < 1)
         {
             isGameOver = true;
             playerWonGame = false;

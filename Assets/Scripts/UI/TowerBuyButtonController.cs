@@ -6,16 +6,21 @@ using UnityEngine.UI;
 
 public class TowerBuyButtonController : MonoBehaviour
 {
-    [SerializeField] private Tower tower;
+    public GameObject towerObject;
+    private Tower tower;
     [SerializeField] private TextMeshProUGUI costText;
+    [SerializeField] private TextMeshProUGUI towerName;
     [SerializeField] private Button buyButton;
 
-    private void Awake()
-    {
-        costText.text = tower.Cost.ToString();
-
+    public void Setup(){
         EventBus<MoneyChangeEvent>.Subscribe(OnMoneyChange);
         EventBus<WavePauseUpdate>.Subscribe(OnWaveStateUpdate);
+
+        Debug.Log(towerObject);
+        tower = towerObject.GetComponent<Tower>();
+        costText.text = tower.Cost.ToString();
+        towerName.text = towerObject.name;
+        buyButton.onClick.AddListener(OnClick);
         CheckPrice();
     }
 
@@ -41,20 +46,21 @@ public class TowerBuyButtonController : MonoBehaviour
     {
         if (tower.Cost > GameManager.Instance.Money)
         {
-            SetActive(false);
-            buyButton.image.color = Color.red;
-            costText.color = Color.red;
+            buyButton.interactable = false;
         }
         else
         {
-            SetActive(true);
-            buyButton.image.color = Color.white;
-            costText.color = Color.black;
+            buyButton.interactable = true;
         }
     }
 
     void SetActive(bool active)
     {
         buyButton.interactable = active;
+    }
+
+    void OnClick()
+    {
+        EventBus<TowerSelectedEvent>.Raise(new TowerSelectedEvent(towerObject));
     }
 }

@@ -6,6 +6,7 @@ public class Tile : MonoBehaviour
 {
     [SerializeField] public bool hasTower { get; set; } = false;
     [SerializeField] public GameObject tower { get; set; } = null;
+    [SerializeField] private GameObject tileMesh;
     private Tower towerScript;
     private bool isHovered = false;
 
@@ -14,7 +15,7 @@ public class Tile : MonoBehaviour
     public Vector3 GetOriginalScale() { return originalScale; }
     private void Awake()
     {
-        originalScale = transform.localScale;
+        originalScale = tileMesh.transform.localScale;
         EventBus<TileHoverEvent>.Subscribe(OnTileHover);
         EventBus<TileUpdateEvent>.Subscribe(OnTileUpdate);
     }
@@ -26,13 +27,13 @@ public class Tile : MonoBehaviour
 
     private void Update()
     {
-        if (transform.localScale != originalScale && !isHovered)
+        if (tileMesh.transform.localScale != originalScale && !isHovered)
         {
-            transform.localScale = originalScale;
+            tileMesh.transform.localScale = originalScale;
         }
         else if (isHovered)
         {
-            transform.localScale = originalScale * 1.2f;
+            tileMesh.transform.localScale = originalScale * 1.2f;
         }
         isHovered = false;
     }
@@ -60,9 +61,10 @@ public class Tile : MonoBehaviour
         }
         else if(tileUpdateEvent.tile == this)
         {
-            tower = Instantiate(tileUpdateEvent.tower, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
+            tower = Instantiate(tileUpdateEvent.tower, tileMesh.transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
             towerScript = tower.GetComponent<Tower>();
             hasTower = true;
+            tower.transform.parent = transform;
             EventBus<PurchaseEvent>.Raise(new PurchaseEvent(towerScript.Cost));
         }
 

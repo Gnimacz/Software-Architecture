@@ -10,7 +10,7 @@ public class BaseEnemy : MonoBehaviour, IDamagable
     [SerializeField] float speed = 10f;
     [SerializeField] int damage = 1;
     [SerializeField] bool isAlive = true;
-    [SerializeField] bool hasDebuff = false;
+    [SerializeField] List<IDamagable.Debuff> debuffs = new List<IDamagable.Debuff>();
     [SerializeField] int money = 5;
 
 
@@ -44,10 +44,10 @@ public class BaseEnemy : MonoBehaviour, IDamagable
         set { isAlive = value; }
     }
 
-    public bool HasDebuff
+    public List<IDamagable.Debuff> Debuffs
     {
-        get { return hasDebuff; }
-        set { hasDebuff = value; }
+        get { return debuffs; }
+        set { debuffs = value; }
     }
 
     public int Money
@@ -56,12 +56,16 @@ public class BaseEnemy : MonoBehaviour, IDamagable
         set { money = value; }
     }
 
+    public Transform ParentTransform
+    {
+        get { return transform; }
+    }
+
 
     public void OnDeath()
     {
         isAlive = false;
         EventBus<EnemyKilledEvent>.Raise(new EnemyKilledEvent(this));
-        //Destroy(gameObject);
     }
 
     public void OnHurt(float damageTaken)
@@ -83,19 +87,42 @@ public class BaseEnemy : MonoBehaviour, IDamagable
                 }
                 OnHurt(damage);
                 break;
-            case IDamagable.DamageType.Debuff_Slow:
-                if (!hasDebuff)
-                {
-                    hasDebuff = true;
-                    speed *= 0.5f;
-                }
-                break;
             default:
                 break;
         }
 
-        
 
+
+    }
+
+    public void AddDebuff(IDamagable.Debuff debuff)
+    {
+        if (Debuffs.Contains(debuff)) return;
+        Debuffs.Add(debuff);
+        switch (debuff.debuffType)
+        {
+            case IDamagable.DebuffType.Slow:
+                speed *= debuff.level;
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    public void RemoveDebuff(IDamagable.Debuff debuff)
+    {
+        if (!Debuffs.Contains(debuff)) return;
+        Debuffs.Remove(debuff);
+        switch (debuff.debuffType)
+        {
+            case IDamagable.DebuffType.Slow:
+                speed /= debuff.level;
+                break;
+
+            default:
+                break;
+        }
     }
     #endregion
 

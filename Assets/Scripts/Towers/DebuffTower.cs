@@ -7,17 +7,21 @@ public class DebuffTower : Tower
 {
     [Header("Draw Circle Settings")]
     [SerializeField] private int steps = 20;
-    [SerializeField] private float range = 5f;
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private SphereCollider targetCollider;
     [SerializeField] private float drawHeight = 0.1f;
 
     [Header("Attack Settings")]
-    [SerializeField] private float damage = 0f;
-    [SerializeField] private float attackSpeed = 1f;
+    [SerializeField] private IDamagable.Debuff debuff;
+    [SerializeField] public float attackSpeed = 1f;
+    [SerializeField] public float range = 5f;
     [SerializeField] private bool canAttack = true;
+    [SerializeField] private GameObject attackEffect;
+    [SerializeField] private GameObject enemyDebuffEffect;
+    [SerializeField] private Transform attackEffectTransform;
 
     [Header("Upgrade Settings")]
+    [SerializeField] private string towerType;
     [SerializeField] private Tower nextUpgrade;
     [SerializeField] private int cost = 10;
     [SerializeField] private int sellValue = 5;
@@ -25,20 +29,23 @@ public class DebuffTower : Tower
     private List<IDamagable> targetEnemies = new List<IDamagable>();
     #region protected variables
     protected override int Steps { get => steps; set => steps = value; }
-    protected override float Range { get => range; set => range = value; }
+    public override float Range { get => range; set => range = value; }
     protected override LineRenderer LineRenderer { get => lineRenderer; }
 
     protected override SphereCollider TargetCollider { get => targetCollider; }
     protected override float DrawHeight { get => drawHeight; set => drawHeight = value; }
 
-    protected override float Damage { get => damage; set => damage = value; }
-    protected override float AttackSpeed { get => attackSpeed; set => attackSpeed = value; }
+    public override float Damage { get => debuff.level; set => debuff.level = value; }
+    public override float AttackSpeed { get => attackSpeed; set => attackSpeed = value; }
     protected override bool CanAttack { get => canAttack; set => canAttack = value; }
 
+    public override string TowerType { get => towerType; }
     public override Tower NextUpgrade { get => nextUpgrade; set => nextUpgrade = value; }
     public override int Cost { get => cost; set => cost = value; }
     public override int SellValue { get => sellValue; set => sellValue = value; }
     protected override List<IDamagable> TargetEnemies { get => targetEnemies; set => targetEnemies = value; }
+    protected override GameObject AttackEffect { get => attackEffect; }
+    protected override Transform AttackEffectTransform { get => attackEffectTransform; }
     #endregion
 
     #region public getter methods
@@ -91,6 +98,7 @@ public class DebuffTower : Tower
         EventBus<EnemyKilledEvent>.Subscribe(onEnemyKilled);
         EventBus<EnemyReachedGoalEvent>.Subscribe(OnEnemyReachedGoal);
         EventBus<TowerUpGradeEvent>.Subscribe(OnTowerUpgrade);
+        EventBus<WavePauseUpdate>.Subscribe(OnWaveUpdate);
     }
 
     private void OnDestroy()
@@ -98,6 +106,21 @@ public class DebuffTower : Tower
         EventBus<EnemyKilledEvent>.Unsubscribe(onEnemyKilled);
         EventBus<EnemyReachedGoalEvent>.Unsubscribe(OnEnemyReachedGoal);
         EventBus<TowerUpGradeEvent>.Unsubscribe(OnTowerUpgrade);
+        EventBus<WavePauseUpdate>.Unsubscribe(OnWaveUpdate);
+    }
+
+    private void OnWaveUpdate(WavePauseUpdate update)
+    {
+        if (!update.isPaused)
+        {
+            canAttack = true;
+            lineRenderer.enabled = false;
+        }
+        else
+        {
+            canAttack = false;
+            lineRenderer.enabled = true;
+        }
     }
 
 
@@ -105,18 +128,6 @@ public class DebuffTower : Tower
     {
         while (canAttack && !GameManager.Instance.isGameOver)
         {
-            //if (targetEnemies.Count > 0)
-            //{
-            //for (int i = 0; i < targetEnemies.Count; i++)
-            //{
-            //    IDamagable enemy = targetEnemies[i];
-            //    if (enemy.health <= 0)
-            //    {
-            //        targetEnemies.Remove(enemy);
-            //        i--;
-            //    }
-            //    enemy.TakeDamage(damage, IDamagable.DamageType.Debuff_Slow);
-            //}
             foreach (IDamagable enemy in targetEnemies.ToList())
             {
                 if (!enemy.IsAlive || enemy == null)
@@ -124,9 +135,10 @@ public class DebuffTower : Tower
                     targetEnemies.Remove(enemy);
                     continue;
                 }
-                enemy.TakeDamage(Damage, IDamagable.DamageType.Debuff_Slow);
+                enemy.AddDebuff(debuff);
+                Instantiate(enemyDebuffEffect, enemy.ParentTransform.position, Quaternion.identity);
             }
-            //}
+            if(targetEnemies.Count > 0) Instantiate(AttackEffect, AttackEffectTransform.position, Quaternion.identity);
             yield return new WaitForSeconds(attackSpeed);
         }
     }
@@ -152,6 +164,7 @@ public class DebuffTower : Tower
             if (enemy != null)
             {
                 targetEnemies.Remove(enemy);
+                enemy.RemoveDebuff(debuff);
             }
         }
     }

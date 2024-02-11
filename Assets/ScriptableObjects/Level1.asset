@@ -16,5 +16,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ee4f1db24f81e754fa08f14d2a2521fa, type: 2}
   - {fileID: 11400000, guid: bc6562146cd2d994d8fdf21f338d2c63, type: 2}
   - {fileID: 11400000, guid: 36b44b4cbd2cc594fb75d2e68ddf6fb4, type: 2}
-  timeBetweenWaves: 5
+  - {fileID: 11400000, guid: 911074084f165104fb1839fd115cef17, type: 2}
+  - {fileID: 11400000, guid: 668cbec325e93cc49b0281b90c51db70, type: 2}
+  timeBetweenWaves: 15
   health: 10

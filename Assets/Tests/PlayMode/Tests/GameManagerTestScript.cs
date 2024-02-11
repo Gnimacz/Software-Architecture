@@ -9,13 +9,11 @@ using UnityEngine.TestTools;
 public class GameManagerTestScript
 {
 
-    //[OneTimeSetUp]
-    [UnitySetUp]
+    [OneTimeSetUp]
     public void LoadScene()
     {
-        SceneManager.LoadScene("Main");
+        SceneManager.LoadScene("UnitTestScene");
     }
-
 
     [UnityTest]
     public IEnumerator GameOverPlayerWon()
@@ -27,7 +25,7 @@ public class GameManagerTestScript
         EventBus<GameOverEvent>.Raise(new GameOverEvent(true));
 
         Assert.IsTrue(gameManager.isGameOver && (gameManager.PlayerWonGame == true));
-        
+
     }
 
     [UnityTest]
@@ -55,6 +53,7 @@ public class GameManagerTestScript
         yield return new WaitForEndOfFrame();
 
         Assert.AreEqual(gameManager, GameManager.Instance.gameObject);
-        
+
     }
+
 }

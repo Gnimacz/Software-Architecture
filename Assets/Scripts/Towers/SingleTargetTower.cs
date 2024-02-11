@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,17 +9,20 @@ public class SingleTargetTower : Tower
 {
     [Header("Draw Circle Settings")]
     [SerializeField] private int steps = 20;
-    [SerializeField] private float range = 5f;
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private SphereCollider targetCollider;
     [SerializeField] private float drawHeight = 0.1f;
 
     [Header("Attack Settings")]
-    [SerializeField] private float damage = 1f;
-    [SerializeField] private float attackSpeed = 0.2f;
+    [SerializeField] public float damage = 1f;
+    [SerializeField] public float range = 5f;
+    [SerializeField] public float attackSpeed = 0.2f;
     [SerializeField] private bool canAttack = true;
+    [SerializeField] private GameObject attackEffect;
+    [SerializeField] private Transform attackEffectTransform;
 
     [Header("Upgrade Settings")]
+    [SerializeField] private string towerThumbnail;
     [SerializeField] private Tower nextUpgrade;
     [SerializeField] private int cost = 10;
     [SerializeField] private int sellValue = 5;
@@ -28,20 +32,23 @@ public class SingleTargetTower : Tower
 
     #region protected variables
     protected override int Steps { get => steps; set => steps = value; }
-    protected override float Range { get => range; set => range = value; }
+    public override float Range { get => range; set => range = value; }
     protected override LineRenderer LineRenderer { get => lineRenderer; }
 
     protected override SphereCollider TargetCollider { get => targetCollider; }
     protected override float DrawHeight { get => drawHeight; set => drawHeight = value; }
 
-    protected override float Damage { get => damage; set => damage = value; }
-    protected override float AttackSpeed { get => attackSpeed; set => attackSpeed = value; }
+    public override float Damage { get => damage; set => damage = value; }
+    public override float AttackSpeed { get => attackSpeed; set => attackSpeed = value; }
     protected override bool CanAttack { get => canAttack; set => canAttack = value; }
 
+    public override string TowerType { get => towerThumbnail; }
     public override Tower NextUpgrade { get => nextUpgrade; set => nextUpgrade = value; }
     public override int Cost { get => cost; set => cost = value; }
     public override int SellValue { get => sellValue; set => sellValue = value; }
     protected override List<IDamagable> TargetEnemies { get => targetEnemies; set => targetEnemies = value; }
+    protected override GameObject AttackEffect { get => attackEffect; }
+    protected override Transform AttackEffectTransform { get => attackEffectTransform; }
     #endregion
 
     #region public getter methods
@@ -93,15 +100,31 @@ public class SingleTargetTower : Tower
         EventBus<EnemyKilledEvent>.Subscribe(onEnemyKilled);
         EventBus<EnemyReachedGoalEvent>.Subscribe(onEnemyReachedGoal);
         EventBus<TowerUpGradeEvent>.Subscribe(OnTowerUpgrade);
+        EventBus<WavePauseUpdate>.Subscribe(OnWaveUpdate);
     }
+
 
     private void OnDestroy()
     {
         EventBus<EnemyKilledEvent>.Unsubscribe(onEnemyKilled);
         EventBus<EnemyReachedGoalEvent>.Unsubscribe(onEnemyReachedGoal);
         EventBus<TowerUpGradeEvent>.Unsubscribe(OnTowerUpgrade);
+        EventBus<WavePauseUpdate>.Unsubscribe(OnWaveUpdate);
     }
 
+    private void OnWaveUpdate(WavePauseUpdate update)
+    {
+        if (!update.isPaused)
+        {
+            canAttack = true;
+            lineRenderer.enabled = false;
+        }
+        else
+        {
+            canAttack = false;
+            lineRenderer.enabled = true;
+        }
+    }
 
     protected override IEnumerator Attack()
     {
@@ -117,6 +140,7 @@ public class SingleTargetTower : Tower
                     continue;
                 }
                 enemy.TakeDamage(damage, IDamagable.DamageType.Physical);
+                if(attackEffect && attackEffectTransform) Instantiate(attackEffect, attackEffectTransform.position, attackEffectTransform.rotation);
 
             }
             yield return new WaitForSeconds(attackSpeed);

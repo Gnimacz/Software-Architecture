@@ -11,7 +11,6 @@ using UnityEngine;
 public class BuyMenuGenerator : MonoBehaviour
 {
     [SerializeField] private GameObject towerButtonPrefab;
-    private TowerBuyButtonController towerBuyButtonController;
     void Awake()
     {
         foreach (GameObject tower in WaveManager.Instance.waves[WaveManager.Instance.currentWave].availableTowers)

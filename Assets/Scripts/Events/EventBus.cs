@@ -4,6 +4,11 @@ using UnityEngine.Rendering;
 
 public abstract class Event { }
 
+/// <summary>
+/// This class is responsible for the event bus.
+/// It is used to subscribe, unsubscribe and raise events.
+/// This file also contains all the events that can be raised in the game.
+/// </summary>
 public class EventBus<Event>
 {
     private static event Action<Event> EventRaised;

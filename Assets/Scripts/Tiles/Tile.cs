@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This class is responsible for the tiles in the game.
+/// It is used to keep track of the towers on the tiles and to update the tiles when a tower is placed or removed.
+/// It also handles the hover effect for the tiles.
+/// It works together with the Tower class to place and remove towers.
+/// </summary>
 public class Tile : MonoBehaviour
 {
     [SerializeField] public bool hasTower { get; set; } = false;

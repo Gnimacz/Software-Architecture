@@ -5,6 +5,10 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
+/// <summary>
+/// This class is responsible for managing the waves of enemies.
+/// It is used to spawn enemies, handle enemy deaths and enemy reaching the goal.
+/// </summary>
 public class WaveManager : MonoBehaviour
 {
     public List<WaveScriptableObject> waves = new List<WaveScriptableObject>();

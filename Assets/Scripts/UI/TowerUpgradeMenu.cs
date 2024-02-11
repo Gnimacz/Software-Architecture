@@ -5,6 +5,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// This class is responsible for the tower upgrade menu.
+/// It is used to display the tower's stats and the upgrade button.
+/// </summary>
 public class TowerUpgradeMenu : MonoBehaviour
 {
     public Tile tile;

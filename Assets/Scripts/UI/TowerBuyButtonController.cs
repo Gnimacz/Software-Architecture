@@ -4,6 +4,10 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
+/// <summary>
+/// This class is responsible for the tower buy button.
+/// It is used to display the tower's cost and name and to check if the player can afford the tower.
+/// </summary>
 public class TowerBuyButtonController : MonoBehaviour
 {
     public GameObject towerObject;
@@ -39,7 +43,14 @@ public class TowerBuyButtonController : MonoBehaviour
 
     void OnWaveStateUpdate(Event e)
     {
-        SetActive((e as WavePauseUpdate).isPaused);
+        // if((e as WavePauseUpdate).isPaused || GameManager.Instance.Money < tower.Cost)
+        // {
+        //     SetActive(true);
+        // }
+        // else
+        // {
+        //     SetActive(false);
+        // }
     }
 
     void CheckPrice()

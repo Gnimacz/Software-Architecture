@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// This class is responsible for the tower.
+/// It is used to create the tower and its properties.
+/// It is the base class for all the towers in the game.
+/// </summary>
 public abstract class Tower : MonoBehaviour
 {
     protected abstract int Steps { get; set; }

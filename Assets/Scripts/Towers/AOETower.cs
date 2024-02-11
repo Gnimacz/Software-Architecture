@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// This class is responsible for the AOE tower.
+/// It is used to attack multiple enemies at once within a certain range.
+/// It is weaker than the single target tower but can attack multiple enemies at once.
+/// </summary>
 public class AOETower : Tower
 {
     [Header("Draw Circle Settings")]
@@ -86,12 +91,10 @@ public class AOETower : Tower
     {
         if (!update.isPaused)
         {
-            canAttack = true;
             lineRenderer.enabled = false;
         }
         else
         {
-            canAttack = false;
             lineRenderer.enabled = true;
         }
     }
@@ -137,6 +140,7 @@ public class AOETower : Tower
                 }
                 enemy.TakeDamage(Damage, IDamagable.DamageType.Physical);
                 Instantiate(AttackEffect, transform.position, Quaternion.identity);
+                Instantiate(AttackEffect, enemy.ParentTransform.position, Quaternion.identity);
             }
             yield return new WaitForSeconds(attackSpeed);
         }

@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// This class is responsible for the debuff tower.
+/// It is used to apply a debuff to the enemies within its range.
+/// You can easily change change the debuff type(if there were more than one) and add new ones.
+/// </summary>
 public class DebuffTower : Tower
 {
     [Header("Draw Circle Settings")]
@@ -114,12 +119,10 @@ public class DebuffTower : Tower
     {
         if (!update.isPaused)
         {
-            canAttack = true;
             lineRenderer.enabled = false;
         }
         else
         {
-            canAttack = false;
             lineRenderer.enabled = true;
         }
     }

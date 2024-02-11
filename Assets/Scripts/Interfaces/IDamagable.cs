@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This interface is responsible for the damagable objects.
+/// It is used to define the properties and methods that a damagable object should have.
+/// It also holds the data structures for the debuffs and the damage types.
+/// </summary>
 public interface IDamagable
 {
     float Health { get; set; }

@@ -2,9 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This class is responsible for handling the towers.
+/// It is used to place and remove towers on the map.
+/// It also handles the tower selection and the tower hover events.
+/// This class works together with the Tile class to place and remove towers.
+/// </summary>
 public class TowerHandler : MonoBehaviour
 {
-    //TODO(check if you hit a tile, then check if it's occupied, then put down the currently selected tower)
     [SerializeField] private Camera mainCamera;
 
     [SerializeField] private GameObject selectedTower = null;

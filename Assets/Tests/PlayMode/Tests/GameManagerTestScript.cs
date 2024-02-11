@@ -6,6 +6,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
+/// <summary>
+/// This class contains tests for the GameManager class.
+/// The tests are run in the Unity Test Runner.
+/// It tests the game over event and the singleton pattern of the GameManager.
+/// </summary>
 public class GameManagerTestScript
 {
 

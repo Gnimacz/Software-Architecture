@@ -3,6 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This class is responsible for the tower menus.
+/// It is used to display the tower buy and upgrade menus.
+/// It also controls when the menus should be displayed during gameplay.
+/// </summary>
 public class TowerMenus : MonoBehaviour
 {
     [SerializeField] private GameObject towerBuyMenu;

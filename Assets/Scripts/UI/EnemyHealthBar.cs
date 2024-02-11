@@ -5,6 +5,10 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.Experimental.GlobalIllumination;
 
+/// <summary>
+/// This class is responsible for the enemy health bar.
+/// It is used to update the health bar when the enemy takes damage.
+/// </summary>
 public class EnemyHealthBar : MonoBehaviour
 {
     [SerializeField] private BaseEnemy enemy;

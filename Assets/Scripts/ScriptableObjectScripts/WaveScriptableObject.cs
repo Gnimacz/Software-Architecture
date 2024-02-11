@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "EnemyWave", menuName = "Software-Architecture/WaveScriptableObject", order = 0)]
+/// <summary>
+/// This class is responsible for the wave scriptable object.
+/// It is used to store the enemies to spawn and the time between spawns for a wave.
+/// It also stores the available towers for the player to buy.
+/// </summary>
 public class WaveScriptableObject : ScriptableObject
 {
     public List<GameObject> EnemiesToSpawn = new List<GameObject>();

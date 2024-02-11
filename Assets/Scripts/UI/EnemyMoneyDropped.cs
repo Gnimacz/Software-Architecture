@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using UnityEditor.SceneTemplate;
 
+/// <summary>
+/// This class is responsible for displaying the amount of money dropped by the enemy.
+/// It is used to display the money dropped by the enemy when it is killed.
+/// </summary>
 public class EnemyMoneyDropped : MonoBehaviour
 {
 

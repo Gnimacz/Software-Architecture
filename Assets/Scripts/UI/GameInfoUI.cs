@@ -4,6 +4,11 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
+/// <summary>
+/// This class is responsible for displaying the game information.
+/// It is used to display the player's health, money, wave number, level, wave timer, and win or lose message.
+/// It also controls the game speed slider and is responsible for showing or hiding certain UI elements.
+/// </summary>
 public class GameInfoUI : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI livesText;

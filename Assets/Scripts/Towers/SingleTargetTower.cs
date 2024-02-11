@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
+/// <summary>
+/// This class is responsible for the single target tower.
+/// It is used to attack a single enemy at a time.
+/// </summary>
 public class SingleTargetTower : Tower
 {
     [Header("Draw Circle Settings")]
@@ -117,12 +119,10 @@ public class SingleTargetTower : Tower
     {
         if (!update.isPaused)
         {
-            canAttack = true;
             lineRenderer.enabled = false;
         }
         else
         {
-            canAttack = false;
             lineRenderer.enabled = true;
         }
     }
@@ -142,6 +142,7 @@ public class SingleTargetTower : Tower
                 }
                 enemy.TakeDamage(damage, IDamagable.DamageType.Physical);
                 if(attackEffect && attackEffectTransform) Instantiate(attackEffect, attackEffectTransform.position, attackEffectTransform.rotation);
+                if(attackEffect) Instantiate(attackEffect, enemy.ParentTransform.position, Quaternion.identity).transform.localScale = new Vector3(2.5f, 2.5f, 2.5f);
 
             }
             yield return new WaitForSeconds(attackSpeed);

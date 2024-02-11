@@ -1,5 +1,11 @@
 using UnityEngine;
 
+/// <summary>
+/// This class is responsible for the game manager.
+/// It is used to keep track of the player's money and health.
+/// It also listens to events and updates the money and health accordingly.
+/// It also listens to the game over event and sets the game over state.
+/// </summary>
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private int startMoney = 10;

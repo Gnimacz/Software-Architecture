@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+/// <summary>
+/// This class is responsible for the base enemy.
+/// It is used to store the base enemy stats and move the enemy to the goal.
+/// It also implements the IDamagable interface.
+/// </summary>
 public class BaseEnemy : MonoBehaviour, IDamagable
 {
     [SerializeField] float hp = 6f;

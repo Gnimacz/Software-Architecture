@@ -76,6 +76,7 @@ public class DebuffTower : Tower
         {
             GameObject newTower = Instantiate(NextUpgrade.gameObject, transform.position, transform.rotation);
             newTower.transform.parent = transform.parent;
+            newTower.transform.parent.GetComponent<Tile>().tower = newTower;
             Destroy(gameObject);
         }
 

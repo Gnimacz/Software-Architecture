@@ -53,10 +53,14 @@ public class TowerUpgradeMenu : MonoBehaviour
             upgradeButton.interactable = false;
             UpgradeButtonText.text = "Max Level";
         }
-        else
+        else if(tower.NextUpgrade.Cost <= GameManager.Instance.Money)
         {
             upgradeButton.interactable = true;
             UpgradeButtonText.text = "Upgrade(" + tower.NextUpgrade.Cost + ")";
+        }
+        else{
+            upgradeButton.interactable = false;
+            UpgradeButtonText.text = "Not enough money";
         }
     }
 

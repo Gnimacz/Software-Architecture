@@ -18,9 +18,7 @@ public class TowerBuyButtonController : MonoBehaviour
 
     public void Setup(){
         EventBus<MoneyChangeEvent>.Subscribe(OnMoneyChange);
-        EventBus<WavePauseUpdate>.Subscribe(OnWaveStateUpdate);
 
-        Debug.Log(towerObject);
         tower = towerObject.GetComponent<Tower>();
         costText.text = tower.Cost.ToString();
         towerName.text = towerObject.name;
@@ -31,7 +29,6 @@ public class TowerBuyButtonController : MonoBehaviour
     private void OnDestroy()
     {
         EventBus<MoneyChangeEvent>.Unsubscribe(OnMoneyChange);
-        EventBus<WavePauseUpdate>.Unsubscribe(OnWaveStateUpdate);
     }
 
     void OnMoneyChange(Event e)
@@ -39,18 +36,6 @@ public class TowerBuyButtonController : MonoBehaviour
         MoneyChangeEvent moneyChangeEvent = e as MoneyChangeEvent;
         CheckPrice();
 
-    }
-
-    void OnWaveStateUpdate(Event e)
-    {
-        // if((e as WavePauseUpdate).isPaused || GameManager.Instance.Money < tower.Cost)
-        // {
-        //     SetActive(true);
-        // }
-        // else
-        // {
-        //     SetActive(false);
-        // }
     }
 
     void CheckPrice()

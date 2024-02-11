@@ -72,11 +72,11 @@ public class TowerHandler : MonoBehaviour
         {
             if (!hit.collider.CompareTag("Tile")) continue;
             Tile tile = hit.collider.gameObject.transform.parent.GetComponent<Tile>();
-            Debug.Log("Tile found at mouse position");
+            // Debug.Log("Tile found at mouse position");
             return tile;
         }
 
-        Debug.Log("No Tile found at mouse position");
+        // Debug.Log("No Tile found at mouse position");
         return null;
     }
 

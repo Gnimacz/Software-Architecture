@@ -116,7 +116,7 @@ public class WaveManager : MonoBehaviour
         for (int i = 0; i < timeBetweenWaves; i++)
         {
             EventBus<WavePauseUpdate>.Raise(new WavePauseUpdate(true, timeBetweenWaves - i));
-            Debug.LogWarning("Wave in cooldown!\n" + (timeBetweenWaves - i) + " remaining.");
+            // Debug.LogWarning("Wave in cooldown!\n" + (timeBetweenWaves - i) + " remaining.");
             yield return new WaitForSeconds(1);
         }
         EventBus<WavePauseUpdate>.Raise(new WavePauseUpdate(false, 0));

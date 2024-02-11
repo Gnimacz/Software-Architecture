@@ -20,8 +20,6 @@ public class BuyMenuGenerator : MonoBehaviour
             TowerBuyButtonController towerBuyButtonController = towerButton.GetComponent<TowerBuyButtonController>();
             towerBuyButtonController.towerObject = tower;
             towerButton.transform.SetParent(this.transform);
-            Debug.Log(tower);
-            Debug.Log(towerBuyButtonController.towerObject);
             towerButton.GetComponent<TowerBuyButtonController>().Setup();
         }
     }
